@@ -1,7 +1,8 @@
-from flask import Flask, flash, render_template, session, redirect, request, url_for
+from flask import Flask, flash, render_template, session, redirect, request, url_for, jsonify
 from functools import wraps
 import urllib.request
 import pymongo
+from pymongo import MongoClient
 #import magic
 import urllib.request
 from werkzeug.utils import secure_filename
@@ -19,8 +20,20 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = b'\xcc^\x91\xea\x17-\xd0W\x03\xa7\xf8J0\xac8\xc5'
 
 # Database
-client = pymongo.MongoClient('localhost', 27017)
-db = client.user_login_system
+# client = pymongo.MongoClient('localhost', 27017)
+# db = client.user_login_system
+
+# Docker:
+client = MongoClient(host='test_mongodb',
+                      port=27017, 
+                      username='root', 
+                      password='pass',
+                    authSource="admin")
+db = client["user_db"]
+
+# client = MongoClient(host = 'localhost', port = 27017)
+# db = client["user_db"]
+
 
 
 def allowed_file(filename):
